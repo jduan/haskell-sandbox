@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- The only function you want to export is isPalindrome
 module Palindrome
   ( isPalindrome
@@ -5,20 +7,21 @@ module Palindrome
 
 -- Selectively import only 3 functions!
 import Data.Char (isPunctuation, isSpace, toLower)
+import qualified Data.Text as T
 
-stripWhiteSpace :: String -> String
-stripWhiteSpace = filter (not . isSpace)
+stripWhiteSpace :: T.Text -> T.Text
+stripWhiteSpace = T.filter (not . isSpace)
 
-stripPunctuation :: String -> String
-stripPunctuation = filter (not . isPunctuation)
+stripPunctuation :: T.Text -> T.Text
+stripPunctuation = T.filter (not . isPunctuation)
 
-toLowerCase :: String -> String
-toLowerCase = map toLower
+toLowerCase :: T.Text -> T.Text
+toLowerCase = T.map toLower
 
-preprocess :: String -> String
-preprocess = stripWhiteSpace . stripPunctuation . toLowerCase
+preprocess :: T.Text -> T.Text
+preprocess = stripWhiteSpace . stripPunctuation . T.toLower
 
-isPalindrome :: String -> Bool
-isPalindrome text = cleanText == reverse cleanText
+isPalindrome :: T.Text -> Bool
+isPalindrome text = cleanText == T.reverse cleanText
   where
     cleanText = preprocess text
