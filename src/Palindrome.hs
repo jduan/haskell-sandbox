@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 -- The only function you want to export is isPalindrome
 module Palindrome
   ( isPalindrome

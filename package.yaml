@@ -25,6 +25,7 @@ dependencies:
 
 library:
   source-dirs: src
+  default-extensions: OverloadedStrings
 
 executables:
   haskell-sandbox-exe:
@@ -36,6 +37,7 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - haskell-sandbox
+    default-extensions: OverloadedStrings
 
 tests:
   haskell-sandbox-test:
