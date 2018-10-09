@@ -1,4 +1,4 @@
-import Data.Char (isPunctuation)
+import Data.Char (isPunctuation, isSpace)
 import Data.Text as T
 import Palindrome
 import Test.QuickCheck
@@ -8,6 +8,7 @@ main :: IO ()
 main = do
   quickCheckWith stdArgs {maxSuccess = 1000} prop_reverseInvariant
   quickCheckWith stdArgs {maxSuccess = 1000} prop_punctuationInvariant
+  quickCheckWith stdArgs {maxSuccess = 1000} prop_whitespaceInvariant
   putStrLn "done"
 
 prop_punctuationInvariant text = preprocess text == preprocess noPuncText
@@ -17,3 +18,8 @@ prop_punctuationInvariant text = preprocess text == preprocess noPuncText
 prop_reverseInvariant text = isPalindrome text == isPalindrome reversedText
   where
     reversedText = T.reverse text
+
+prop_whitespaceInvariant text =
+  isPalindrome text == isPalindrome noWhitespaceTest
+  where
+    noWhitespaceTest = T.filter (not . isSpace) text
