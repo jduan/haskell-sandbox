@@ -6,8 +6,8 @@ import Test.QuickCheck.Instances
 
 main :: IO ()
 main = do
-  quickCheck prop_reverseInvariant
-  quickCheck prop_punctuationInvariant
+  quickCheckWith stdArgs {maxSuccess = 1000} prop_reverseInvariant
+  quickCheckWith stdArgs {maxSuccess = 1000} prop_punctuationInvariant
   putStrLn "done"
 
 prop_punctuationInvariant text = preprocess text == preprocess noPuncText
