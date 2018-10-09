@@ -1,6 +1,7 @@
 -- The only function you want to export is isPalindrome
 module Palindrome
   ( isPalindrome
+  , preprocess
   ) where
 
 -- Selectively import only 3 functions!
