@@ -1,5 +1,7 @@
 module Prime where
 
+import Data.Char (isDigit)
+
 -- There are lots of prime numbers. Let's set up a reasonable upperbound.
 -- Otherwise, you may consume all the memory of your computer.
 primes :: [Int]
@@ -75,3 +77,33 @@ displayResult :: Either PrimeError Bool -> String
 displayResult (Right True) = "It's a prime"
 displayResult (Right False) = "It's not a prime"
 displayResult (Left primeError) = show primeError
+
+addStrInts :: String -> String -> Either String Int
+addStrInts s1 s2 =
+  case (isNumber s1, isNumber s2) of
+    (True, True) -> Right (read s1 + read s2)
+    (False, True) -> Left "First argument isn't a number"
+    (True, False) -> Left "Second argument isn't a number"
+    (False, False) -> Left "Neither argument isn't a number"
+  where
+    isNumber = all isDigit
+
+succMaybe :: (Enum a, Bounded a, Eq a) => a -> Maybe a
+succMaybe n =
+  if n == maxBound
+    then Nothing
+    else Just (succ n)
+
+tailSafe :: [a] -> [a]
+tailSafe [] = []
+tailSafe (x:xs) = xs
+
+lastSafe :: [a] -> Either String a
+lastSafe [] = Left "Empty list"
+lastSafe xs = go xs 0
+  where
+    go [y] n = Right y
+    go (y:ys) n =
+      if n > 100
+        then Left "List too long"
+        else go ys (n + 1)
