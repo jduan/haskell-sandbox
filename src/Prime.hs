@@ -45,3 +45,33 @@ primeFactors n
 -- Given a number that's greater than 1, find the first prime factor.
 firstFactor :: Int -> Int
 firstFactor n = head $ filter ((== 0) . (n `mod`)) primes
+
+-- Use Either type to get better error messages
+isPrime' :: Int -> Either String Bool
+isPrime' n
+  | n < 2 = Left "Numbers less than 2 are not candidates for primes"
+  | n >= length primes = Left "Value exceeds limits of prime checker"
+  | otherwise = Right (n `elem` primes)
+
+data PrimeError
+  = TooLarge
+  | InvalidValue
+  deriving (Eq)
+
+instance Show PrimeError where
+  show TooLarge = "Value exceeds max bound"
+  show InvalidValue = "Value is not a valid candidate for prime checking"
+
+-- The great thing about Either is that because the Left constructor can be
+-- any type, there’s no limit to how expressive you can be. If you wanted
+-- to, you could return a function!
+isPrime'' :: Int -> Either PrimeError Bool
+isPrime'' n
+  | n < 2 = Left InvalidValue
+  | n >= length primes = Left TooLarge
+  | otherwise = Right (n `elem` primes)
+
+displayResult :: Either PrimeError Bool -> String
+displayResult (Right True) = "It's a prime"
+displayResult (Right False) = "It's not a prime"
+displayResult (Left primeError) = show primeError
