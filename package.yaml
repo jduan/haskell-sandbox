@@ -20,10 +20,13 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/haskell-sandbox#readme>
 
 dependencies:
-- base >= 4.7 && < 5
-- text
 - QuickCheck
+- base >= 4.7 && < 5
+- bytestring
+- http-conduit
+- http-types
 - quickcheck-instances
+- text
 
 library:
   source-dirs: src
