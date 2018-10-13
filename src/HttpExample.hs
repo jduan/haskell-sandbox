@@ -61,6 +61,17 @@ instance FromJSON NOAAResult where
     v .: "datacoverage" <*>
     v .: "mindate"
 
+instance ToJSON NOAAResult where
+  toJSON (NOAAResult uid mindate maxdate name datacoverage resultId) =
+    object
+      [ "uid" .= uid
+      , "mindate" .= mindate
+      , "maxdate" .= maxdate
+      , "name" .= name
+      , "datacoverage" .= datacoverage
+      , "id" .= resultId
+      ]
+
 data Resultset = Resultset
   { offset :: Int
   , count :: Int
@@ -69,11 +80,15 @@ data Resultset = Resultset
 
 instance FromJSON Resultset
 
+instance ToJSON Resultset
+
 newtype Metadata = Metadata
   { resultset :: Resultset
   } deriving (Show, Generic)
 
 instance FromJSON Metadata
+
+instance ToJSON Metadata
 
 data NOAAResponse = NOAAResponse
   { metadata :: Metadata
@@ -82,11 +97,52 @@ data NOAAResponse = NOAAResponse
 
 instance FromJSON NOAAResponse
 
+-- To make NOAAResponse an instance of ToJSON, all of its nested fields
+-- have to be instances of ToJSON as well.
+instance ToJSON NOAAResponse
+
 printResults :: Either String [NOAAResult] -> IO ()
 printResults (Left msg) = print msg
 printResults (Right results) = do
   forM_ results (print . name)
 
+-- This shows how to make a Sum type an instance of FormJSON and ToJSON
+data IntList
+  = EmptyList
+  | Cons Int
+         IntList
+  deriving (Show, Eq, Generic)
+
+instance FromJSON IntList
+
+instance ToJSON IntList
+
+intListExample :: IntList
+intListExample = Cons 1 $ Cons 2 $ Cons 3 $ EmptyList
+
+-- LC.putStrLn $ encode intListExample
+-- {
+--   "tag": "Cons",
+--   "contents": [
+--     1,
+--     {
+--       "tag": "Cons",
+--       "contents": [
+--         2,
+--         {
+--           "tag": "Cons",
+--           "contents": [
+--             3,
+--             {
+--               "tag": "EmptyList"
+--             }
+--           ]
+--         }
+--       ]
+--     }
+--   ]
+-- }
+--
 main' :: IO ()
 main' = do
   jsonData <- L.readFile "data.json"
