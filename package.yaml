@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - QuickCheck
+- aeson
 - base >= 4.7 && < 5
 - bytestring
 - http-conduit
@@ -31,6 +32,7 @@ dependencies:
 library:
   source-dirs: src
   default-extensions: OverloadedStrings
+                    , DeriveGeneric
 
 executables:
   haskell-sandbox-exe:
@@ -44,6 +46,7 @@ executables:
     dependencies:
     - haskell-sandbox
     default-extensions: OverloadedStrings
+                      , DeriveGeneric
 
 tests:
   haskell-sandbox-test:

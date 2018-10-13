@@ -1,9 +1,12 @@
 module HttpExample where
 
+import Data.Aeson
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.ByteString.Lazy as L
 import qualified Data.ByteString.Lazy.Char8 as LC
+import Data.Text as T
+import GHC.Generics
 import Network.HTTP.Simple
 
 myToken :: BC.ByteString
@@ -15,6 +18,9 @@ noaaHost = "www.ncdc.noaa.gov"
 apiPath :: BC.ByteString
 apiPath = "/cdo-web/api/v2/datasets"
 
+-- every setRequestXXX call takes an existing request object, makes some
+-- changes, and returns a new request object.
+-- "defaultRequest" is the start request object.
 buildRequest ::
      BC.ByteString -> BC.ByteString -> BC.ByteString -> BC.ByteString -> Request
 buildRequest token host method path =
