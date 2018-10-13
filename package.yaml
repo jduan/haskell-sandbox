@@ -27,7 +27,9 @@ dependencies:
 - http-conduit
 - http-types
 - quickcheck-instances
+- sqlite-simple
 - text
+- time
 
 library:
   source-dirs: src
